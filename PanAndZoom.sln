@@ -1,70 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28315.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\build\_build.csproj", "{EEE92699-B114-4332-ABE5-D120E9136FF5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3FBE9035-8FFD-447D-949A-8E63AF15B89A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{053504B1-A08C-4617-BB5E-F81935A7A00A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BDB2F017-80B3-40D2-84A5-F006D4886B1A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.Base", "samples\AvaloniaDemo.Base\AvaloniaDemo.Base.csproj", "{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.Controls.PanAndZoom", "src\Avalonia.Controls.PanAndZoom\Avalonia.Controls.PanAndZoom.csproj", "{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.Controls.PanAndZoom.UnitTests", "tests\Avalonia.Controls.PanAndZoom.UnitTests\Avalonia.Controls.PanAndZoom.UnitTests.csproj", "{5436C290-E80A-4323-BA66-8E5997F464A9}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6E241F85-FE51-47E5-B9C2-50AAA7FEC499}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3DA99C4E-89E3-4049-9C22-0A7EC60D83D8}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		build.ps1 = build.ps1
-		build.sh = build.sh
-		global.json = global.json
-		build\panandzoom.public.snk = build\panandzoom.public.snk
-		azure-pipelines.yml = azure-pipelines.yml
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{E16CD9A4-AA47-4440-9EB7-B9E8E59EBFC5}"
-	ProjectSection(SolutionItems) = preProject
-		NuGet.Config = NuGet.Config
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanAndZoomDemo", "samples\PanAndZoomDemo\PanAndZoomDemo.csproj", "{F34F8C63-5C14-4D67-B14F-5EB408232408}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{D83B9ECD-F143-4A6C-AFD7-F961174D824C}"
-	ProjectSection(SolutionItems) = preProject
-		build\Avalonia.Desktop.props = build\Avalonia.Desktop.props
-		build\Avalonia.Diagnostics.props = build\Avalonia.Diagnostics.props
-		build\Avalonia.props = build\Avalonia.props
-		build\Base.props = build\Base.props
-		build\ReferenceAssemblies.props = build\ReferenceAssemblies.props
-		build\XUnit.props = build\XUnit.props
-		build\SourceLink.props = build\SourceLink.props
-		build\SignAssembly.props = build\SignAssembly.props
-		build\Avalonia.Themes.Fluent.props = build\Avalonia.Themes.Fluent.props
-		build\Avalonia.Web.props = build\Avalonia.Web.props
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanAndZoomDemo.Android", "samples\PanAndZoomDemo.Android\PanAndZoomDemo.Android.csproj", "{5CE7941F-C799-41E2-A19D-D8D6F67DC90A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{10DDB443-E910-47C5-B1C1-1ED769BE9834}"
-	ProjectSection(SolutionItems) = preProject
-		.gitattributes = .gitattributes
-		.gitignore = .gitignore
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanAndZoomDemo.Desktop", "samples\PanAndZoomDemo.Desktop\PanAndZoomDemo.Desktop.csproj", "{33250FFA-D1AA-430F-9C24-F6F3A29F0120}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D27AEAB9-B470-4E27-9EF7-A34B87423676}"
-	ProjectSection(SolutionItems) = preProject
-		LICENSE.TXT = LICENSE.TXT
-		README.md = README.md
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanAndZoomDemo.iOS", "samples\PanAndZoomDemo.iOS\PanAndZoomDemo.iOS.csproj", "{B2A73BF2-2BF2-4C5D-882E-CE54A51E27F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Desktop", "samples\AvaloniaDemo.Desktop\AvaloniaDemo.Desktop.csproj", "{76443341-EF1B-4087-8F4D-38F3B04487B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanAndZoomDemo.Browser", "samples\PanAndZoomDemo.Browser\PanAndZoomDemo.Browser.csproj", "{A3074BB8-B40F-460D-A73B-D8CF7C268F21}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{821DAFAE-8C09-45DE-A0F5-0AC0668457D4}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\build.yml = .github\workflows\build.yml
-		.github\workflows\pages.yml = .github\workflows\pages.yml
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.PanAndZoom", "src\Avalonia.Controls.PanAndZoom\Avalonia.Controls.PanAndZoom.csproj", "{EEE9885A-9B42-4D30-9203-45E059AA0F86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,43 +26,35 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EEE92699-B114-4332-ABE5-D120E9136FF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEE92699-B114-4332-ABE5-D120E9136FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEE92699-B114-4332-ABE5-D120E9136FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEE92699-B114-4332-ABE5-D120E9136FF5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5436C290-E80A-4323-BA66-8E5997F464A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5436C290-E80A-4323-BA66-8E5997F464A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5436C290-E80A-4323-BA66-8E5997F464A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5436C290-E80A-4323-BA66-8E5997F464A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76443341-EF1B-4087-8F4D-38F3B04487B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76443341-EF1B-4087-8F4D-38F3B04487B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76443341-EF1B-4087-8F4D-38F3B04487B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76443341-EF1B-4087-8F4D-38F3B04487B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F34F8C63-5C14-4D67-B14F-5EB408232408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F34F8C63-5C14-4D67-B14F-5EB408232408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F34F8C63-5C14-4D67-B14F-5EB408232408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F34F8C63-5C14-4D67-B14F-5EB408232408}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CE7941F-C799-41E2-A19D-D8D6F67DC90A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE7941F-C799-41E2-A19D-D8D6F67DC90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE7941F-C799-41E2-A19D-D8D6F67DC90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE7941F-C799-41E2-A19D-D8D6F67DC90A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33250FFA-D1AA-430F-9C24-F6F3A29F0120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33250FFA-D1AA-430F-9C24-F6F3A29F0120}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33250FFA-D1AA-430F-9C24-F6F3A29F0120}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33250FFA-D1AA-430F-9C24-F6F3A29F0120}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2A73BF2-2BF2-4C5D-882E-CE54A51E27F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2A73BF2-2BF2-4C5D-882E-CE54A51E27F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2A73BF2-2BF2-4C5D-882E-CE54A51E27F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2A73BF2-2BF2-4C5D-882E-CE54A51E27F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3074BB8-B40F-460D-A73B-D8CF7C268F21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3074BB8-B40F-460D-A73B-D8CF7C268F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3074BB8-B40F-460D-A73B-D8CF7C268F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3074BB8-B40F-460D-A73B-D8CF7C268F21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEE9885A-9B42-4D30-9203-45E059AA0F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEE9885A-9B42-4D30-9203-45E059AA0F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEE9885A-9B42-4D30-9203-45E059AA0F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEE9885A-9B42-4D30-9203-45E059AA0F86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
-		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0} = {3FBE9035-8FFD-447D-949A-8E63AF15B89A}
-		{EEE92699-B114-4332-ABE5-D120E9136FF5} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
-		{5436C290-E80A-4323-BA66-8E5997F464A9} = {053504B1-A08C-4617-BB5E-F81935A7A00A}
-		{D27AEAB9-B470-4E27-9EF7-A34B87423676} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
-		{10DDB443-E910-47C5-B1C1-1ED769BE9834} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
-		{E16CD9A4-AA47-4440-9EB7-B9E8E59EBFC5} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
-		{D83B9ECD-F143-4A6C-AFD7-F961174D824C} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
-		{76443341-EF1B-4087-8F4D-38F3B04487B8} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
-		{821DAFAE-8C09-45DE-A0F5-0AC0668457D4} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
-	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {81CAD068-E34F-49E9-A78D-B455F3CF2EAC}
+		SolutionGuid = {83CB65B8-011F-4ED7-BCD3-A6CFA935EF7E}
 	EndGlobalSection
 EndGlobal

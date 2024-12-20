@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
+using Avalonia.Input.GestureRecognizers;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
 using Avalonia.Reactive;
@@ -82,6 +84,9 @@ public partial class ZoomBorder : Border
 
         this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
         this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
+        
+        GestureRecognizers.Add(new PinchGestureRecognizer());
+        GestureRecognizers.Add(new ScrollGestureRecognizer{CanHorizontallyScroll = true, CanVerticallyScroll = true});
     }
 
     /// <summary>
@@ -184,6 +189,12 @@ public partial class ZoomBorder : Border
         PointerPressed += Border_PointerPressed;
         PointerReleased += Border_PointerReleased;
         PointerMoved += Border_PointerMoved;
+        AddHandler(Gestures.PinchEvent, GestureOnPinch);
+    }
+
+    private void GestureOnPinch(object sender, PinchEventArgs e)
+    {
+        throw new NotImplementedException();
     }
 
     private void DetachElement()
