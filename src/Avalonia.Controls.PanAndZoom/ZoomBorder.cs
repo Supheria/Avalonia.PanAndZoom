@@ -2,8 +2,6 @@
 using System.Diagnostics;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
-using Avalonia.Input.GestureRecognizers;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
 using Avalonia.Reactive;
@@ -19,7 +17,10 @@ namespace Avalonia.Controls.PanAndZoom;
 public partial class ZoomBorder : Border
 {
     [Conditional("DEBUG")]
-    private static void Log(string message) => Debug.WriteLine(message);
+    private static void Log(string message)
+    {
+        
+    }
 
     private static double ClampValue(double value, double minimum, double maximum)
     {
@@ -86,7 +87,6 @@ public partial class ZoomBorder : Border
         this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
         
         GestureRecognizers.Add(new PinchGestureRecognizer());
-        GestureRecognizers.Add(new ScrollGestureRecognizer{CanHorizontallyScroll = true, CanVerticallyScroll = true});
     }
 
     /// <summary>
@@ -192,11 +192,6 @@ public partial class ZoomBorder : Border
         AddHandler(Gestures.PinchEvent, GestureOnPinch);
     }
 
-    private void GestureOnPinch(object sender, PinchEventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
     private void DetachElement()
     {
         if (_element == null)
@@ -208,6 +203,7 @@ public partial class ZoomBorder : Border
         PointerPressed -= Border_PointerPressed;
         PointerReleased -= Border_PointerReleased;
         PointerMoved -= Border_PointerMoved;
+        RemoveHandler(Gestures.PinchEvent, GestureOnPinch);
         _element.PropertyChanged -= Element_PropertyChanged;
         _element.RenderTransform = null;
         _element = null;
@@ -221,6 +217,27 @@ public partial class ZoomBorder : Border
         }
         var point = e.GetPosition(_element);
         ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
+    }
+    
+    private void GestureOnPinch(object? sender, PinchEventArgs e)
+    {
+        if (!EnableZoom)
+            return;
+        if (_element == null)
+            return;
+        _isPanning = false;
+        _captured = false;
+        // var point = e.ScaleOrigin;
+        // var p = this.VisualRoot?.PointToScreen(point) ?? default;
+        // point = this.TranslatePoint(point, _element) ?? default;
+        var point = _element.PointToClient(this.PointToScreen(e.ScaleOrigin));
+        // Ratio *= e.Scale;
+        
+        _delta += (e.Scale - _scale) * 0.5;
+        ZoomDeltaTo(_delta, point.X, point.Y);
+        _scale = e.Scale;
+        // ScaleStartValue = e.Scale;
+        // Zoom(Zoom, point.X, point.Y);
     }
 
     private void Pressed(PointerPressedEventArgs e)

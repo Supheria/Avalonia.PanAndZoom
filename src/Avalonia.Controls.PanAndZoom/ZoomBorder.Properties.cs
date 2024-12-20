@@ -185,6 +185,8 @@ public partial class ZoomBorder
     private double _offsetX = 0.0;
     private double _offsetY = 0.0;
     private bool _captured = false;
+    private double _scale = 1;
+    private double _delta = 0;
 
     /// <summary>
     /// Zoom changed event.
