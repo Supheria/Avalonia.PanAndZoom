@@ -24,6 +24,7 @@ public partial class MainView : UserControl
         }
 
         DataContext = ZoomBorder1;
+        ResetZoomButton.Click += (_, _) => ZoomBorder1.ResetMatrix();
     }
 
     private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)

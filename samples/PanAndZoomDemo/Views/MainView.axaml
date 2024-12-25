@@ -94,16 +94,9 @@
                                 <Button
                                     Canvas.Left="100"
                                     Canvas.Top="250"
-                                    Command="{Binding ResetMatrix}"
                                     Content="Reset Zoom"
                                     Width="120"
-                                    x:CompileBindings="False"
-                                    x:DataType="paz:ZoomBorder" />
-                                <ListBox
-                                    Canvas.Left="160"
-                                    Canvas.Top="10"
-                                    Width="120"
-                                    x:DataType="paz:ZoomBorder" />
+                                    x:Name="ResetZoomButton" />
                             </Canvas>
                         </Border>
                     </paz:ZoomBorder>
