@@ -12,13 +12,8 @@ namespace Avalonia.Controls.PanAndZoom;
 /// <summary>
 /// Pan and zoom control for Avalonia.
 /// </summary>
-
-[PseudoClasses(":isPanning")]
-public partial class ZoomBorder : Border
+public sealed partial class ZoomBorder : Border
 {
-    [Conditional("DEBUG")]
-    private static void Log(string message) { }
-
     private static double ClampValue(double value, double minimum, double maximum)
     {
         if (minimum > maximum)
@@ -56,7 +51,6 @@ public partial class ZoomBorder : Border
 
     private void PanAndZoom_AttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        Log($"[AttachedToVisualTree] {Name}");
         ChildChanged(Child);
 
         _updating = true;
@@ -66,7 +60,6 @@ public partial class ZoomBorder : Border
 
     private void PanAndZoom_DetachedFromVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        Log($"[DetachedFromVisualTree] {Name}");
         DetachElement();
     }
 
@@ -97,8 +90,6 @@ public partial class ZoomBorder : Border
 
     private void ChildChanged(Control? element)
     {
-        Log($"[ChildChanged] {element}");
-
         if (element != null && element != Element && Element != null)
         {
             DetachElement();
@@ -200,7 +191,6 @@ public partial class ZoomBorder : Border
         BeginPanTo(point.X, point.Y);
         Captured = true;
         IsPanning = true;
-        SetPseudoClass(":isPanning", IsPanning);
     }
 
     private void Released(PointerReleasedEventArgs e)
@@ -211,7 +201,6 @@ public partial class ZoomBorder : Border
             return;
         Captured = false;
         IsPanning = false;
-        SetPseudoClass(":isPanning", IsPanning);
     }
 
     private void Moved(PointerEventArgs e)
@@ -223,20 +212,11 @@ public partial class ZoomBorder : Border
         var point = e.GetPosition(Element);
         ContinuePanTo(point.X, point.Y, true);
     }
-
-    /// <summary>
-    /// Raises <see cref="ZoomChanged"/> event.
-    /// </summary>
-    /// <param name="e">Zoom changed event arguments.</param>
-    protected virtual void OnZoomChanged(ZoomChangedEventArgs e)
-    {
-        ZoomChanged?.Invoke(this, e);
-    }
-
+    
     private void RaiseZoomChanged()
     {
         var args = new ZoomChangedEventArgs(ZoomX, ZoomY, OffsetX, OffsetY);
-        OnZoomChanged(args);
+        ZoomChanged?.Invoke(this, args);
     }
 
     private void Constrain()
@@ -254,11 +234,8 @@ public partial class ZoomBorder : Border
     /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
     private void Invalidate(bool skipTransitions = false)
     {
-        Log("[Invalidate] Begin");
-
         if (Element == null)
         {
-            Log("[Invalidate] End");
             return;
         }
 
@@ -269,8 +246,6 @@ public partial class ZoomBorder : Border
         
         InvalidateElement(skipTransitions);
         RaiseZoomChanged();
-
-        Log("[Invalidate] End");
     }
 
     /// <summary>
@@ -327,8 +302,7 @@ public partial class ZoomBorder : Border
             return;
         }
         _updating = true;
-
-        Log("[SetMatrix]");
+        
         Matrix = matrix;
         Invalidate(skipTransitions);
 
@@ -367,7 +341,6 @@ public partial class ZoomBorder : Border
 
         _updating = true;
 
-        Log("[ZoomTo]");
         Matrix = MatrixHelper.ScaleAtPrepend(Matrix, ratio, ratio, x, y);
         Invalidate(skipTransitions);
 
@@ -416,8 +389,7 @@ public partial class ZoomBorder : Border
             return;
         }
         _updating = true;
-
-        Log("[ContinuePanTo]");
+        
         var dx = x - Previous.X;
         var dy = y - Previous.Y;
         var delta = new Point(dx, dy);
@@ -428,6 +400,4 @@ public partial class ZoomBorder : Border
 
         _updating = false;
     }
-
-    private void SetPseudoClass(string name, bool flag) => PseudoClasses.Set(name, flag);
 }
