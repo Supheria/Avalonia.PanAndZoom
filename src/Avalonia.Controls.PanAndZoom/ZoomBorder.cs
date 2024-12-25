@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using Avalonia.Animation;
-using Avalonia.Controls.Metadata;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;

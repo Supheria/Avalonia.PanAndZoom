@@ -1,5 +1,4 @@
-﻿using System;
-using Avalonia.Data;
+﻿using Avalonia.Data;
 using Avalonia.Media.Transformation;
 
 namespace Avalonia.Controls.PanAndZoom;
