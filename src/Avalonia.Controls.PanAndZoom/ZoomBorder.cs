@@ -201,21 +201,6 @@ public partial class ZoomBorder : Border
         AddHandler(Gestures.PinchEndedEvent, GestureOnPinchEnded);
     }
 
-    private void BorderOnDoubleTapped(object? sender, TappedEventArgs e)
-    {
-        var point = e.GetPosition(_element);
-        if (_zoomOut)
-        {
-            ZoomDeltaTo(-5, point.X, point.Y);
-            _zoomOut = false;
-        }
-        else
-        {
-            ZoomDeltaTo(5, point.X, point.Y);
-            _zoomOut = true;
-        }
-    }
-
     private void DetachElement()
     {
         if (_element == null)
@@ -227,11 +212,29 @@ public partial class ZoomBorder : Border
         PointerPressed -= BorderOnPointerPressed;
         PointerReleased -= BorderOnPointerReleased;
         PointerMoved -= BorderOnPointerMoved;
+        RemoveHandler(DoubleTappedEvent, BorderOnDoubleTapped);
         RemoveHandler(Gestures.PinchEvent, GestureOnPinch);
         RemoveHandler(Gestures.PinchEndedEvent, GestureOnPinchEnded);
         _element.PropertyChanged -= ElementOnPropertyChanged;
         _element.RenderTransform = null;
         _element = null;
+    }
+
+    private void BorderOnDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (_element?.IsPointerOver is not true)
+            return;
+        var point = e.GetPosition(_element);
+        if (_zoomOut)
+        {
+            ZoomDeltaTo(-5, point.X, point.Y);
+            _zoomOut = false;
+        }
+        else
+        {
+            ZoomDeltaTo(5, point.X, point.Y);
+            _zoomOut = true;
+        }
     }
 
     private void Wheel(PointerWheelEventArgs e)
