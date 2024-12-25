@@ -110,8 +110,6 @@
                                 <ListBox
                                     Canvas.Left="160"
                                     Canvas.Top="10"
-                                    ItemsSource="{x:Static paz:ZoomBorder.ButtonNames}"
-                                    SelectedItem="{Binding PanButton, Mode=TwoWay}"
                                     Width="120"
                                     x:DataType="paz:ZoomBorder" />
                             </Canvas>

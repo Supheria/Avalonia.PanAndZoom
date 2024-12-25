@@ -15,17 +15,6 @@ public partial class ZoomBorder
     public static StretchMode[] StretchModes { get; } = (StretchMode[])Enum.GetValues(typeof(StretchMode));
 
     /// <summary>
-    /// Gets available button names.
-    /// </summary>
-    public static ButtonName[] ButtonNames { get; } = (ButtonName[])Enum.GetValues(typeof(ButtonName));
-
-    /// <summary>
-    /// Identifies the <seealso cref="PanButton"/> avalonia property.
-    /// </summary>
-    public static readonly StyledProperty<ButtonName> PanButtonProperty =
-        AvaloniaProperty.Register<ZoomBorder, ButtonName>(nameof(PanButton), ButtonName.Middle, false, BindingMode.TwoWay);
-
-    /// <summary>
     /// Identifies the <seealso cref="ZoomSpeed"/> avalonia property.
     /// </summary>
     public static readonly StyledProperty<double> ZoomSpeedProperty =
@@ -186,21 +175,12 @@ public partial class ZoomBorder
     private double _offsetY = 0.0;
     private bool _captured = false;
     private double _scale = 1;
-    private double _delta = 0;
+    private double _delta = 1;
 
     /// <summary>
     /// Zoom changed event.
     /// </summary>
     public event ZoomChangedEventHandler? ZoomChanged;
-
-    /// <summary>
-    /// Gets or sets pan input button.
-    /// </summary>
-    public ButtonName PanButton
-    {
-        get => GetValue(PanButtonProperty);
-        set => SetValue(PanButtonProperty, value);
-    }
 
     /// <summary>
     /// Gets or sets zoom speed ratio.
