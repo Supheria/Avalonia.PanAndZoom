@@ -91,7 +91,6 @@ public partial class ZoomBorder : Border
         DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
 
         this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
-        this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
 
         GestureRecognizers.Add(new PinchGestureRecognizer());
     }
@@ -154,20 +153,7 @@ public partial class ZoomBorder : Border
     {
         Moved(e);
     }
-
-    private void ElementOnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-    {
-        if (e.Property == BoundsProperty)
-        {
-            InvalidateScrollable();
-        }
-    }
-
-    private void BoundsChanged(Rect bounds)
-    {
-        // Log($"[BoundsChanged] {bounds}");
-        InvalidateScrollable();
-    }
+    
 
     private void ChildChanged(Control? element)
     {
@@ -191,7 +177,6 @@ public partial class ZoomBorder : Border
             return;
         }
         _element = element;
-        _element.PropertyChanged += ElementOnPropertyChanged;
         PointerWheelChanged += BorderOnPointerWheelChanged;
         PointerPressed += BorderOnPointerPressed;
         PointerReleased += BorderOnPointerReleased;
@@ -215,7 +200,6 @@ public partial class ZoomBorder : Border
         RemoveHandler(DoubleTappedEvent, BorderOnDoubleTapped);
         RemoveHandler(Gestures.PinchEvent, GestureOnPinch);
         RemoveHandler(Gestures.PinchEndedEvent, GestureOnPinchEnded);
-        _element.PropertyChanged -= ElementOnPropertyChanged;
         _element.RenderTransform = null;
         _element = null;
     }
@@ -345,7 +329,6 @@ public partial class ZoomBorder : Border
         }
 
         InvalidateProperties();
-        InvalidateScrollable();
         InvalidateElement(skipTransitions);
         RaiseZoomChanged();
 
