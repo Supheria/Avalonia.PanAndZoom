@@ -206,9 +206,9 @@ public partial class ZoomBorder : Border
 
     private void BorderOnDoubleTapped(object? sender, TappedEventArgs e)
     {
-        if (_element?.IsPointerOver is not true)
-            return;
         var point = e.GetPosition(_element);
+        if (_element?.Bounds.Contains(point) is not true)
+            return;
         if (_zoomOut)
         {
             ZoomDeltaTo(-5, point.X, point.Y);
