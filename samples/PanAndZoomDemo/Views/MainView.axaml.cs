@@ -52,7 +52,7 @@ public partial class MainView : UserControl
 
     private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)
     {
-        Debug.WriteLine($"[ZoomChanged] {e.ZoomX} {e.ZoomY} {e.OffsetX} {e.OffsetY}");
+        // Debug.WriteLine($"[ZoomChanged] {e.ZoomX} {e.ZoomY} {e.OffsetX} {e.OffsetY}");
     }
 
     private void TabControl_SelectionChanged(object? sender, SelectionChangedEventArgs e)

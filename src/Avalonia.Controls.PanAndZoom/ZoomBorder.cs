@@ -229,7 +229,6 @@ public partial class ZoomBorder : Border
         }
         var point = e.GetPosition(_element);
         ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
-        Debug.Print(e.Delta.ToString());
     }
 
     private void GestureOnPinch(object? sender, PinchEventArgs e)
@@ -242,7 +241,7 @@ public partial class ZoomBorder : Border
         _captured = false;
         var point = _element.PointToClient(this.PointToScreen(e.ScaleOrigin));
         var dScale = e.Scale - _scale;
-        ZoomDeltaTo(dScale * 5, point.X, point.Y);
+        ZoomDeltaTo(dScale * GesturePinchSpeed, point.X, point.Y);
         _scale = e.Scale;
     }
 

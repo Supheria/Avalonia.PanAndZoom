@@ -360,7 +360,24 @@ public partial class ZoomBorder
     public static readonly StyledProperty<double> ZoomInRatioProperty = AvaloniaProperty.Register<
         ZoomBorder,
         double
-    >(nameof(ZoomInRatio), 5.0, false, BindingMode.TwoWay);
+    >(nameof(ZoomInRatio), 3.0, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Gets or sets the speed of gesture pinch
+    /// </summary>
+    public double GesturePinchSpeed
+    {
+        get => GetValue(GesturePinchSpeedProperty);
+        set => SetValue(GesturePinchSpeedProperty, value);
+    }
+
+    /// <summary>
+    /// Identifies the <seealso cref="GesturePinchSpeed"/> avalonia property.
+    /// </summary>
+    public static readonly StyledProperty<double> GesturePinchSpeedProperty = AvaloniaProperty.Register<
+        ZoomBorder,
+        double
+    >(nameof(GesturePinchSpeed), 5.0, false, BindingMode.TwoWay);
 
     static ZoomBorder()
     {
