@@ -179,27 +179,27 @@ public partial class ZoomBorder : ILogicalScrollable
 
     private void InvalidateScrollable()
     {
-        if (this is not ILogicalScrollable scrollable)
-        {
-            return;
-        }
-
-        if (_element == null)
-        {
-            return;
-        }
-
-        CalculateScrollable(_element.Bounds, this.Bounds.Size, _matrix, out var extent, out var viewport, out var offset);
-
-        Log($"[InvalidateScrollable] _element.Bounds: {_element.Bounds}, _matrix: {_matrix}");
-        Log($"[InvalidateScrollable] _extent: {_extent}, extent: {extent}, diff: {extent - _extent}");
-        Log($"[InvalidateScrollable] _offset: {_offset}, offset: {offset}, diff: {offset - _offset}");
-        Log($"[InvalidateScrollable] _viewport: {_viewport}, viewport: {viewport}, diff: {viewport - _viewport}");
-
-        _extent = extent;
-        _offset = offset;
-        _viewport = viewport;
-
-        scrollable.RaiseScrollInvalidated(EventArgs.Empty);
+        // if (this is not ILogicalScrollable scrollable)
+        // {
+        //     return;
+        // }
+        //
+        // if (_element == null)
+        // {
+        //     return;
+        // }
+        //
+        // CalculateScrollable(_element.Bounds, this.Bounds.Size, _matrix, out var extent, out var viewport, out var offset);
+        //
+        // Log($"[InvalidateScrollable] _element.Bounds: {_element.Bounds}, _matrix: {_matrix}");
+        // Log($"[InvalidateScrollable] _extent: {_extent}, extent: {extent}, diff: {extent - _extent}");
+        // Log($"[InvalidateScrollable] _offset: {_offset}, offset: {offset}, diff: {offset - _offset}");
+        // Log($"[InvalidateScrollable] _viewport: {_viewport}, viewport: {viewport}, diff: {viewport - _viewport}");
+        //
+        // _extent = extent;
+        // _offset = offset;
+        // _viewport = viewport;
+        //
+        // scrollable.RaiseScrollInvalidated(EventArgs.Empty);
     }
 }
