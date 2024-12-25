@@ -58,7 +58,6 @@
                         Focusable="True"
                         HorizontalAlignment="Stretch"
                         Name="ZoomBorder1"
-                        Stretch="None"
                         VerticalAlignment="Stretch"
                         ZoomSpeed="1.5">
                         <Border
@@ -101,13 +100,6 @@
                                     x:CompileBindings="False"
                                     x:DataType="paz:ZoomBorder" />
                                 <ListBox
-                                    Canvas.Left="10"
-                                    Canvas.Top="10"
-                                    ItemsSource="{x:Static paz:ZoomBorder.StretchModes}"
-                                    SelectedItem="{Binding Stretch, Mode=TwoWay}"
-                                    Width="120"
-                                    x:DataType="paz:ZoomBorder" />
-                                <ListBox
                                     Canvas.Left="160"
                                     Canvas.Top="10"
                                     Width="120"
@@ -124,7 +116,6 @@
                         Focusable="True"
                         HorizontalAlignment="Stretch"
                         Name="ZoomBorder2"
-                        Stretch="None"
                         VerticalAlignment="Stretch"
                         ZoomSpeed="1.5">
                         <Canvas Height="300" Width="300">

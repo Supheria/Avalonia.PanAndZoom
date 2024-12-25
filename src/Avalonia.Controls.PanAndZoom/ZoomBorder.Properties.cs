@@ -35,12 +35,6 @@ public partial class ZoomBorder
     public event ZoomChangedEventHandler? ZoomChanged;
 
     /// <summary>
-    /// Gets available stretch modes.
-    /// </summary>
-    public static StretchMode[] StretchModes { get; } =
-        (StretchMode[])Enum.GetValues(typeof(StretchMode));
-
-    /// <summary>
     /// Gets or sets zoom speed ratio.
     /// </summary>
     public double ZoomSpeed
@@ -93,23 +87,6 @@ public partial class ZoomBorder
             false,
             BindingMode.TwoWay
         );
-
-    /// <summary>
-    /// Gets or sets stretch mode.
-    /// </summary>
-    public StretchMode Stretch
-    {
-        get => GetValue(StretchProperty);
-        set => SetValue(StretchProperty, value);
-    }
-
-    /// <summary>
-    /// Identifies the <seealso cref="Stretch"/> avalonia property.
-    /// </summary>
-    public static readonly StyledProperty<StretchMode> StretchProperty = AvaloniaProperty.Register<
-        ZoomBorder,
-        StretchMode
-    >(nameof(Stretch), StretchMode.Uniform, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the zoom ratio for x axis.
@@ -383,7 +360,6 @@ public partial class ZoomBorder
     {
         AffectsArrange<ZoomBorder>(
             ZoomSpeedProperty,
-            StretchProperty,
             EnableConstrainsProperty,
             MinZoomXProperty,
             MaxZoomXProperty,

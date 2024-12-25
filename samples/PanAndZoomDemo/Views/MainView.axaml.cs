@@ -14,40 +14,16 @@ public partial class MainView : UserControl
         ZoomBorder1 = this.Find<ZoomBorder>("ZoomBorder1");
         if (ZoomBorder1 != null)
         {
-            ZoomBorder1.KeyDown += ZoomBorder_KeyDown;
             ZoomBorder1.ZoomChanged += ZoomBorder_ZoomChanged;
         }
 
         ZoomBorder2 = this.Find<ZoomBorder>("ZoomBorder2");
         if (ZoomBorder2 != null)
         {
-            ZoomBorder2.KeyDown += ZoomBorder_KeyDown;
             ZoomBorder2.ZoomChanged += ZoomBorder_ZoomChanged;
         }
 
         DataContext = ZoomBorder1;
-    }
-
-    private void ZoomBorder_KeyDown(object? sender, KeyEventArgs e)
-    {
-        var zoomBorder = this.DataContext as ZoomBorder;
-            
-        switch (e.Key)
-        {
-            case Key.F:
-                zoomBorder?.Fill();
-                break;
-            case Key.U:
-                zoomBorder?.Uniform();
-                break;
-            case Key.R:
-                zoomBorder?.ResetMatrix();
-                break;
-            case Key.T:
-                zoomBorder?.ToggleStretchMode();
-                zoomBorder?.AutoFit();
-                break;
-        }
     }
 
     private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)
