@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Avalonia.Animation;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -20,12 +21,10 @@ public sealed partial class ZoomBorder : Border
             throw new ArgumentException(
                 $"Parameter {nameof(minimum)} is greater than {nameof(maximum)}."
             );
-
         if (maximum < minimum)
             throw new ArgumentException(
                 $"Parameter {nameof(maximum)} is lower than {nameof(minimum)}."
             );
-
         return Min(Max(value, minimum), maximum);
     }
 
@@ -41,77 +40,42 @@ public sealed partial class ZoomBorder : Border
         Focusable = true;
         Background = Brushes.Transparent;
 
-        AttachedToVisualTree += PanAndZoom_AttachedToVisualTree;
-        DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
-
         this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
 
         GestureRecognizers.Add(new PinchGestureRecognizer());
     }
 
-    private void PanAndZoom_AttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
+    /// <inheritdoc />
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
+        base.OnAttachedToVisualTree(e);
         ChildChanged(Child);
 
         _updating = true;
-        Invalidate(skipTransitions: false);
+        Invalidate();
         _updating = false;
     }
 
-    private void PanAndZoom_DetachedFromVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
+    /// <inheritdoc />
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
+        base.OnDetachedFromVisualTree(e);
         DetachElement();
     }
-
-    private void BorderOnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (!EnableZoom)
-        {
-            return;
-        }
-        Wheel(e);
-    }
-
-    private void BorderOnPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        Pressed(e);
-    }
-
-    private void BorderOnPointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        Released(e);
-    }
-
-    private void BorderOnPointerMoved(object? sender, PointerEventArgs e)
-    {
-        Moved(e);
-    }
-    
 
     private void ChildChanged(Control? element)
     {
         if (element != null && element != Element && Element != null)
-        {
             DetachElement();
-        }
-
         if (element != null && element != Element)
-        {
             AttachElement(element);
-        }
     }
 
     private void AttachElement(Control? element)
     {
         if (element == null)
-        {
             return;
-        }
         Element = element;
-        PointerWheelChanged += BorderOnPointerWheelChanged;
-        PointerPressed += BorderOnPointerPressed;
-        PointerReleased += BorderOnPointerReleased;
-        PointerMoved += BorderOnPointerMoved;
         AddHandler(DoubleTappedEvent, BorderOnDoubleTapped);
         AddHandler(Gestures.PinchEvent, GestureOnPinch);
         AddHandler(Gestures.PinchEndedEvent, GestureOnPinchEnded);
@@ -120,19 +84,58 @@ public sealed partial class ZoomBorder : Border
     private void DetachElement()
     {
         if (Element == null)
-        {
             return;
-        }
-
-        PointerWheelChanged -= BorderOnPointerWheelChanged;
-        PointerPressed -= BorderOnPointerPressed;
-        PointerReleased -= BorderOnPointerReleased;
-        PointerMoved -= BorderOnPointerMoved;
+        Element.RenderTransform = null;
+        Element = null;
         RemoveHandler(DoubleTappedEvent, BorderOnDoubleTapped);
         RemoveHandler(Gestures.PinchEvent, GestureOnPinch);
         RemoveHandler(Gestures.PinchEndedEvent, GestureOnPinchEnded);
-        Element.RenderTransform = null;
-        Element = null;
+    }
+
+    protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+    {
+        base.OnPointerWheelChanged(e);
+        if (!EnableZoom)
+            return;
+        if (Element == null || Captured)
+            return;
+        var point = e.GetPosition(Element);
+        ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        base.OnPointerPressed(e);
+        if (!EnablePan)
+            return;
+        if (Element == null || Captured != false || IsPanning != false)
+            return;
+        var point = e.GetPosition(Element);
+        BeginPanTo(point.X, point.Y);
+        Captured = true;
+        IsPanning = true;
+    }
+
+    protected override void OnPointerMoved(PointerEventArgs e)
+    {
+        base.OnPointerMoved(e);
+        if (!EnablePan)
+            return;
+        if (Element == null || Captured != true || IsPanning != true)
+            return;
+        var point = e.GetPosition(Element);
+        ContinuePanTo(point.X, point.Y, true);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        base.OnPointerReleased(e);
+        if (!EnablePan)
+            return;
+        if (Element == null || Captured != true || IsPanning != true)
+            return;
+        Captured = false;
+        IsPanning = false;
     }
 
     private void BorderOnDoubleTapped(object? sender, TappedEventArgs e)
@@ -152,24 +155,14 @@ public sealed partial class ZoomBorder : Border
         }
     }
 
-    private void Wheel(PointerWheelEventArgs e)
-    {
-        if (Element == null || Captured)
-        {
-            return;
-        }
-        var point = e.GetPosition(Element);
-        ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
-    }
-
     private void GestureOnPinch(object? sender, PinchEventArgs e)
     {
         if (!EnableZoom)
             return;
         if (Element == null)
             return;
-        IsPanning = false;
         Captured = false;
+        IsPanning = false;
         var point = Element.PointToClient(this.PointToScreen(e.ScaleOrigin));
         var dScale = e.Scale - Scale;
         ZoomDeltaTo(dScale * GesturePinchSpeed, point.X, point.Y);
@@ -181,38 +174,6 @@ public sealed partial class ZoomBorder : Border
         Scale = 1;
     }
 
-    private void Pressed(PointerPressedEventArgs e)
-    {
-        if (!EnablePan)
-            return;
-        if (Element == null || Captured != false || IsPanning != false)
-            return;
-        var point = e.GetPosition(Element);
-        BeginPanTo(point.X, point.Y);
-        Captured = true;
-        IsPanning = true;
-    }
-
-    private void Released(PointerReleasedEventArgs e)
-    {
-        if (!EnablePan)
-            return;
-        if (Element == null || Captured != true || IsPanning != true)
-            return;
-        Captured = false;
-        IsPanning = false;
-    }
-
-    private void Moved(PointerEventArgs e)
-    {
-        if (!EnablePan)
-            return;
-        if (Element == null || Captured != true || IsPanning != true)
-            return;
-        var point = e.GetPosition(Element);
-        ContinuePanTo(point.X, point.Y, true);
-    }
-    
     private void RaiseZoomChanged()
     {
         var args = new ZoomChangedEventArgs(ZoomX, ZoomY, OffsetX, OffsetY);
@@ -235,15 +196,9 @@ public sealed partial class ZoomBorder : Border
     private void Invalidate(bool skipTransitions = false)
     {
         if (Element == null)
-        {
             return;
-        }
-
         if (EnableConstrains)
-        {
             Constrain();
-        }
-        
         InvalidateElement(skipTransitions);
         RaiseZoomChanged();
     }
@@ -255,17 +210,11 @@ public sealed partial class ZoomBorder : Border
     private void InvalidateElement(bool skipTransitions)
     {
         if (Element == null)
-        {
             return;
-        }
-
-        Animation.Transitions? backupTransitions = null;
-
+        Transitions? backupTransitions = null;
         if (skipTransitions)
         {
-            Animation.Animatable? anim = Element as Animation.Animatable;
-
-            if (anim != null)
+            if (Element is Animatable anim)
             {
                 backupTransitions = anim.Transitions;
                 anim.Transitions = null;
@@ -279,12 +228,8 @@ public sealed partial class ZoomBorder : Border
 
         if (skipTransitions && backupTransitions != null)
         {
-            Animation.Animatable? anim = Element as Animation.Animatable;
-
-            if (anim != null)
-            {
+            if (Element is Animatable anim)
                 anim.Transitions = backupTransitions;
-            }
         }
 
         Element.InvalidateVisual();
@@ -298,11 +243,9 @@ public sealed partial class ZoomBorder : Border
     public void SetMatrix(Matrix matrix, bool skipTransitions = false)
     {
         if (_updating)
-        {
             return;
-        }
         _updating = true;
-        
+
         Matrix = matrix;
         Invalidate(skipTransitions);
 
@@ -327,17 +270,13 @@ public sealed partial class ZoomBorder : Border
     public void ZoomTo(double ratio, double x, double y, bool skipTransitions = false)
     {
         if (_updating)
-        {
             return;
-        }
 
         if (
             (ZoomX >= MaxZoomX && ZoomY >= MaxZoomY && ratio > 1)
             || (ZoomX <= MinZoomX && ZoomY <= MinZoomY && ratio < 1)
         )
-        {
             return;
-        }
 
         _updating = true;
 
@@ -385,11 +324,9 @@ public sealed partial class ZoomBorder : Border
     public void ContinuePanTo(double x, double y, bool skipTransitions = false)
     {
         if (_updating)
-        {
             return;
-        }
         _updating = true;
-        
+
         var dx = x - Previous.X;
         var dy = y - Previous.Y;
         var delta = new Point(dx, dy);
