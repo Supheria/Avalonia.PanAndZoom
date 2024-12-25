@@ -211,12 +211,12 @@ public partial class ZoomBorder : Border
             return;
         if (_zoomOut)
         {
-            ZoomDeltaTo(-5, point.X, point.Y);
+            ZoomDeltaTo(-ZoomInRatio, point.X, point.Y);
             _zoomOut = false;
         }
         else
         {
-            ZoomDeltaTo(5, point.X, point.Y);
+            ZoomDeltaTo(ZoomInRatio, point.X, point.Y);
             _zoomOut = true;
         }
     }

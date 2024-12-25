@@ -345,6 +345,23 @@ public partial class ZoomBorder
         bool
     >(nameof(EnableZoom), true, false, BindingMode.TwoWay);
 
+    /// <summary>
+    /// Gets or sets the ratio of zoom-in
+    /// </summary>
+    public double ZoomInRatio
+    {
+        get => GetValue(ZoomInRatioProperty);
+        set => SetValue(ZoomInRatioProperty, value);
+    }
+
+    /// <summary>
+    /// Identifies the <seealso cref="ZoomInRatio"/> avalonia property.
+    /// </summary>
+    public static readonly StyledProperty<double> ZoomInRatioProperty = AvaloniaProperty.Register<
+        ZoomBorder,
+        double
+    >(nameof(ZoomInRatio), 5.0, false, BindingMode.TwoWay);
+
     static ZoomBorder()
     {
         AffectsArrange<ZoomBorder>(
