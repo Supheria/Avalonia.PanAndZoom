@@ -25,7 +25,7 @@ public class ZoomChangedEventArgs : EventArgs
     /// <summary>
     /// Gets the pan offset for y axis.
     /// </summary>
-    public double OffsetY { get;  }
+    public double OffsetY { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ZoomChangedEventArgs"/> class.

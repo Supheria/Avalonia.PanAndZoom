@@ -9,30 +9,27 @@ namespace Avalonia.Controls.PanAndZoom;
 /// </summary>
 public partial class ZoomBorder
 {
-    Control? _element;
-    Point _pan;
-    Point _previous;
-    Matrix _matrix;
-    TransformOperations.Builder _transformBuilder;
-    bool _isPanning;
-    volatile bool _updating;
-    double _zoomX = 1.0;
-    double _zoomY = 1.0;
-    double _offsetX;
-    double _offsetY;
-    bool _captured;
-    double _scale = 1;
-    bool _zoomOut;
-
-    /// <summary>
-    /// Gets the render transform matrix.
-    /// </summary>
-    public Matrix Matrix => _matrix;
 
     /// <summary>
     /// Zoom changed event.
     /// </summary>
     public event ZoomChangedEventHandler? ZoomChanged;
+    
+    volatile bool _updating;
+    
+    Control? Element { get; set; }
+    Matrix Matrix { get; set; }
+    double ZoomX => Matrix.M11;
+    double ZoomY => Matrix.M22;
+    double OffsetX => Matrix.M31;
+    double OffsetY => Matrix.M32;
+    TransformOperations.Builder TransformBuilder { get; set; }
+    bool IsPanning { get; set; }
+    Point Pan { get; set; }
+    Point Previous { get; set; }
+    bool Captured { get; set; }
+    double Scale { get; set; } = 1.0;
+    bool ZoomOut { get; set; }
 
     /// <summary>
     /// Gets or sets zoom speed ratio.
@@ -87,50 +84,6 @@ public partial class ZoomBorder
             false,
             BindingMode.TwoWay
         );
-
-    /// <summary>
-    /// Gets the zoom ratio for x axis.
-    /// </summary>
-    public double ZoomX => _zoomX;
-
-    /// <summary>
-    /// Identifies the <seealso cref="ZoomX"/> avalonia property.
-    /// </summary>
-    public static readonly DirectProperty<ZoomBorder, double> ZoomXProperty =
-        AvaloniaProperty.RegisterDirect<ZoomBorder, double>(nameof(ZoomX), o => o.ZoomX, null, 1.0);
-
-    /// <summary>
-    /// Gets the zoom ratio for y axis.
-    /// </summary>
-    public double ZoomY => _zoomY;
-
-    /// <summary>
-    /// Identifies the <seealso cref="ZoomY"/> avalonia property.
-    /// </summary>
-    public static readonly DirectProperty<ZoomBorder, double> ZoomYProperty =
-        AvaloniaProperty.RegisterDirect<ZoomBorder, double>(nameof(ZoomY), o => o.ZoomY, null, 1.0);
-
-    /// <summary>
-    /// Gets the pan offset for x axis.
-    /// </summary>
-    public double OffsetX => _offsetX;
-
-    /// <summary>
-    /// Identifies the <seealso cref="OffsetX"/> avalonia property.
-    /// </summary>
-    public static readonly DirectProperty<ZoomBorder, double> OffsetXProperty =
-        AvaloniaProperty.RegisterDirect<ZoomBorder, double>(nameof(OffsetX), o => o.OffsetX);
-
-    /// <summary>
-    /// Gets the pan offset for y axis.
-    /// </summary>
-    public double OffsetY => _offsetY;
-
-    /// <summary>
-    /// Identifies the <seealso cref="OffsetY"/> avalonia property.
-    /// </summary>
-    public static readonly DirectProperty<ZoomBorder, double> OffsetYProperty =
-        AvaloniaProperty.RegisterDirect<ZoomBorder, double>(nameof(OffsetY), o => o.OffsetY);
 
     /// <summary>
     /// Gets or sets flag indicating whether zoom ratio and pan offset constrains are applied.
@@ -351,10 +304,13 @@ public partial class ZoomBorder
     /// <summary>
     /// Identifies the <seealso cref="GesturePinchSpeed"/> avalonia property.
     /// </summary>
-    public static readonly StyledProperty<double> GesturePinchSpeedProperty = AvaloniaProperty.Register<
-        ZoomBorder,
-        double
-    >(nameof(GesturePinchSpeed), 5.0, false, BindingMode.TwoWay);
+    public static readonly StyledProperty<double> GesturePinchSpeedProperty =
+        AvaloniaProperty.Register<ZoomBorder, double>(
+            nameof(GesturePinchSpeed),
+            5.0,
+            false,
+            BindingMode.TwoWay
+        );
 
     static ZoomBorder()
     {

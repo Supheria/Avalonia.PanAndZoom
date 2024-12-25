@@ -39,9 +39,9 @@ public partial class ZoomBorder : Border
     /// </summary>
     public ZoomBorder()
     {
-        _isPanning = false;
-        _matrix = Matrix.Identity;
-        _captured = false;
+        IsPanning = false;
+        Matrix = Matrix.Identity;
+        Captured = false;
 
         Focusable = true;
         Background = Brushes.Transparent;
@@ -99,12 +99,12 @@ public partial class ZoomBorder : Border
     {
         Log($"[ChildChanged] {element}");
 
-        if (element != null && element != _element && _element != null)
+        if (element != null && element != Element && Element != null)
         {
             DetachElement();
         }
 
-        if (element != null && element != _element)
+        if (element != null && element != Element)
         {
             AttachElement(element);
         }
@@ -116,7 +116,7 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        _element = element;
+        Element = element;
         PointerWheelChanged += BorderOnPointerWheelChanged;
         PointerPressed += BorderOnPointerPressed;
         PointerReleased += BorderOnPointerReleased;
@@ -128,7 +128,7 @@ public partial class ZoomBorder : Border
 
     private void DetachElement()
     {
-        if (_element == null)
+        if (Element == null)
         {
             return;
         }
@@ -140,34 +140,34 @@ public partial class ZoomBorder : Border
         RemoveHandler(DoubleTappedEvent, BorderOnDoubleTapped);
         RemoveHandler(Gestures.PinchEvent, GestureOnPinch);
         RemoveHandler(Gestures.PinchEndedEvent, GestureOnPinchEnded);
-        _element.RenderTransform = null;
-        _element = null;
+        Element.RenderTransform = null;
+        Element = null;
     }
 
     private void BorderOnDoubleTapped(object? sender, TappedEventArgs e)
     {
-        var point = e.GetPosition(_element);
-        if (_element?.Bounds.Contains(point) is not true)
+        var point = e.GetPosition(Element);
+        if (Element?.Bounds.Contains(point) is not true)
             return;
-        if (_zoomOut)
+        if (ZoomOut)
         {
             ZoomDeltaTo(-ZoomInRatio, point.X, point.Y);
-            _zoomOut = false;
+            ZoomOut = false;
         }
         else
         {
             ZoomDeltaTo(ZoomInRatio, point.X, point.Y);
-            _zoomOut = true;
+            ZoomOut = true;
         }
     }
 
     private void Wheel(PointerWheelEventArgs e)
     {
-        if (_element == null || _captured)
+        if (Element == null || Captured)
         {
             return;
         }
-        var point = e.GetPosition(_element);
+        var point = e.GetPosition(Element);
         ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
     }
 
@@ -175,52 +175,52 @@ public partial class ZoomBorder : Border
     {
         if (!EnableZoom)
             return;
-        if (_element == null)
+        if (Element == null)
             return;
-        _isPanning = false;
-        _captured = false;
-        var point = _element.PointToClient(this.PointToScreen(e.ScaleOrigin));
-        var dScale = e.Scale - _scale;
+        IsPanning = false;
+        Captured = false;
+        var point = Element.PointToClient(this.PointToScreen(e.ScaleOrigin));
+        var dScale = e.Scale - Scale;
         ZoomDeltaTo(dScale * GesturePinchSpeed, point.X, point.Y);
-        _scale = e.Scale;
+        Scale = e.Scale;
     }
 
     private void GestureOnPinchEnded(object? sender, PinchEndedEventArgs e)
     {
-        _scale = 1;
+        Scale = 1;
     }
 
     private void Pressed(PointerPressedEventArgs e)
     {
         if (!EnablePan)
             return;
-        if (_element == null || _captured != false || _isPanning != false)
+        if (Element == null || Captured != false || IsPanning != false)
             return;
-        var point = e.GetPosition(_element);
+        var point = e.GetPosition(Element);
         BeginPanTo(point.X, point.Y);
-        _captured = true;
-        _isPanning = true;
-        SetPseudoClass(":isPanning", _isPanning);
+        Captured = true;
+        IsPanning = true;
+        SetPseudoClass(":isPanning", IsPanning);
     }
 
     private void Released(PointerReleasedEventArgs e)
     {
         if (!EnablePan)
             return;
-        if (_element == null || _captured != true || _isPanning != true)
+        if (Element == null || Captured != true || IsPanning != true)
             return;
-        _captured = false;
-        _isPanning = false;
-        SetPseudoClass(":isPanning", _isPanning);
+        Captured = false;
+        IsPanning = false;
+        SetPseudoClass(":isPanning", IsPanning);
     }
 
     private void Moved(PointerEventArgs e)
     {
         if (!EnablePan)
             return;
-        if (_element == null || _captured != true || _isPanning != true)
+        if (Element == null || Captured != true || IsPanning != true)
             return;
-        var point = e.GetPosition(_element);
+        var point = e.GetPosition(Element);
         ContinuePanTo(point.X, point.Y, true);
     }
 
@@ -235,17 +235,17 @@ public partial class ZoomBorder : Border
 
     private void RaiseZoomChanged()
     {
-        var args = new ZoomChangedEventArgs(_zoomX, _zoomY, _offsetX, _offsetY);
+        var args = new ZoomChangedEventArgs(ZoomX, ZoomY, OffsetX, OffsetY);
         OnZoomChanged(args);
     }
 
     private void Constrain()
     {
-        var zoomX = ClampValue(_matrix.M11, MinZoomX, MaxZoomX);
-        var zoomY = ClampValue(_matrix.M22, MinZoomY, MaxZoomY);
-        var offsetX = ClampValue(_matrix.M31, MinOffsetX, MaxOffsetX);
-        var offsetY = ClampValue(_matrix.M32, MinOffsetY, MaxOffsetY);
-        _matrix = new Matrix(zoomX, 0.0, 0.0, zoomY, offsetX, offsetY);
+        var zoomX = ClampValue(Matrix.M11, MinZoomX, MaxZoomX);
+        var zoomY = ClampValue(Matrix.M22, MinZoomY, MaxZoomY);
+        var offsetX = ClampValue(Matrix.M31, MinOffsetX, MaxOffsetX);
+        var offsetY = ClampValue(Matrix.M32, MinOffsetY, MaxOffsetY);
+        Matrix = new(zoomX, 0.0, 0.0, zoomY, offsetX, offsetY);
     }
 
     /// <summary>
@@ -256,7 +256,7 @@ public partial class ZoomBorder : Border
     {
         Log("[Invalidate] Begin");
 
-        if (_element == null)
+        if (Element == null)
         {
             Log("[Invalidate] End");
             return;
@@ -266,23 +266,11 @@ public partial class ZoomBorder : Border
         {
             Constrain();
         }
-
-        InvalidateProperties();
+        
         InvalidateElement(skipTransitions);
         RaiseZoomChanged();
 
         Log("[Invalidate] End");
-    }
-
-    /// <summary>
-    /// Invalidate properties.
-    /// </summary>
-    private void InvalidateProperties()
-    {
-        SetAndRaise(ZoomXProperty, ref _zoomX, _matrix.M11);
-        SetAndRaise(ZoomYProperty, ref _zoomY, _matrix.M22);
-        SetAndRaise(OffsetXProperty, ref _offsetX, _matrix.M31);
-        SetAndRaise(OffsetYProperty, ref _offsetY, _matrix.M32);
     }
 
     /// <summary>
@@ -291,7 +279,7 @@ public partial class ZoomBorder : Border
     /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
     private void InvalidateElement(bool skipTransitions)
     {
-        if (_element == null)
+        if (Element == null)
         {
             return;
         }
@@ -300,7 +288,7 @@ public partial class ZoomBorder : Border
 
         if (skipTransitions)
         {
-            Animation.Animatable? anim = _element as Animation.Animatable;
+            Animation.Animatable? anim = Element as Animation.Animatable;
 
             if (anim != null)
             {
@@ -309,14 +297,14 @@ public partial class ZoomBorder : Border
             }
         }
 
-        _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
-        _transformBuilder = new TransformOperations.Builder(1);
-        _transformBuilder.AppendMatrix(_matrix);
-        _element.RenderTransform = _transformBuilder.Build();
+        Element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+        TransformBuilder = new TransformOperations.Builder(1);
+        TransformBuilder.AppendMatrix(Matrix);
+        Element.RenderTransform = TransformBuilder.Build();
 
         if (skipTransitions && backupTransitions != null)
         {
-            Animation.Animatable? anim = _element as Animation.Animatable;
+            Animation.Animatable? anim = Element as Animation.Animatable;
 
             if (anim != null)
             {
@@ -324,7 +312,7 @@ public partial class ZoomBorder : Border
             }
         }
 
-        _element.InvalidateVisual();
+        Element.InvalidateVisual();
     }
 
     /// <summary>
@@ -341,7 +329,7 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[SetMatrix]");
-        _matrix = matrix;
+        Matrix = matrix;
         Invalidate(skipTransitions);
 
         _updating = false;
@@ -353,28 +341,6 @@ public partial class ZoomBorder : Border
     public void ResetMatrix()
     {
         SetMatrix(Matrix.Identity);
-    }
-
-    /// <summary>
-    /// Zoom to provided zoom value and provided center point.
-    /// </summary>
-    /// <param name="zoom">The zoom value.</param>
-    /// <param name="x">The center point x axis coordinate.</param>
-    /// <param name="y">The center point y axis coordinate.</param>
-    /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-    public void Zoom(double zoomX, double zoomY, double x, double y, bool skipTransitions = false)
-    {
-        if (_updating)
-        {
-            return;
-        }
-        _updating = true;
-
-        Log("[Zoom]");
-        _matrix = MatrixHelper.ScaleAt(zoomX, zoomY, x, y);
-        Invalidate(skipTransitions);
-
-        _updating = false;
     }
 
     /// <summary>
@@ -402,39 +368,10 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[ZoomTo]");
-        _matrix = MatrixHelper.ScaleAtPrepend(_matrix, ratio, ratio, x, y);
+        Matrix = MatrixHelper.ScaleAtPrepend(Matrix, ratio, ratio, x, y);
         Invalidate(skipTransitions);
 
         _updating = false;
-    }
-
-    /// <summary>
-    /// Zoom in one step positive delta ratio and panel center point.
-    /// </summary>
-    /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-    public void ZoomIn(double x, double y, bool skipTransitions = false)
-    {
-        if (_element == null)
-        {
-            return;
-        }
-        ZoomTo(ZoomSpeed, x, y, skipTransitions);
-    }
-
-    /// <summary>
-    /// Zoom out one step positive delta ratio and panel center point.
-    /// </summary>
-    /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-    public void ZoomOut(bool skipTransitions = false)
-    {
-        if (_element == null)
-        {
-            return;
-        }
-
-        var x = _element.Bounds.Width / 2.0;
-        var y = _element.Bounds.Height / 2.0;
-        ZoomTo(1 / ZoomSpeed, x, y, skipTransitions);
     }
 
     /// <summary>
@@ -456,61 +393,14 @@ public partial class ZoomBorder : Border
     }
 
     /// <summary>
-    /// Pan control to provided delta.
-    /// </summary>
-    /// <param name="dx">The target x axis delta.</param>
-    /// <param name="dy">The target y axis delta.</param>
-    /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-    public void PanDelta(double dx, double dy, bool skipTransitions = false)
-    {
-        if (_updating)
-        {
-            return;
-        }
-        _updating = true;
-
-        Log("[PanDelta]");
-        _matrix = MatrixHelper.ScaleAndTranslate(
-            _zoomX,
-            _zoomY,
-            _matrix.M31 + dx,
-            _matrix.M32 + dy
-        );
-        Invalidate(skipTransitions);
-
-        _updating = false;
-    }
-
-    /// <summary>
-    /// Pan control to provided target point.
-    /// </summary>
-    /// <param name="x">The target point x axis coordinate.</param>
-    /// <param name="y">The target point y axis coordinate.</param>
-    /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-    public void Pan(double x, double y, bool skipTransitions = false)
-    {
-        if (_updating)
-        {
-            return;
-        }
-        _updating = true;
-
-        Log("[Pan]");
-        _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, x, y);
-        Invalidate(skipTransitions);
-
-        _updating = false;
-    }
-
-    /// <summary>
     /// Set pan origin.
     /// </summary>
     /// <param name="x">The origin point x axis coordinate.</param>
     /// <param name="y">The origin point y axis coordinate.</param>
     public void BeginPanTo(double x, double y)
     {
-        _pan = new Point();
-        _previous = new Point(x, y);
+        Pan = new Point();
+        Previous = new Point(x, y);
     }
 
     /// <summary>
@@ -528,12 +418,12 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[ContinuePanTo]");
-        var dx = x - _previous.X;
-        var dy = y - _previous.Y;
+        var dx = x - Previous.X;
+        var dy = y - Previous.Y;
         var delta = new Point(dx, dy);
-        _previous = new Point(x, y);
-        _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
-        _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
+        Previous = new Point(x, y);
+        Pan = new Point(Pan.X + delta.X, Pan.Y + delta.Y);
+        Matrix = MatrixHelper.TranslatePrepend(Matrix, Pan.X, Pan.Y);
         Invalidate(skipTransitions);
 
         _updating = false;
