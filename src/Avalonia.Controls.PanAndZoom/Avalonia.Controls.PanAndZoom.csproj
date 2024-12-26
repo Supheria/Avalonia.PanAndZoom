@@ -1,20 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>       
-    <TargetFramework>net9.0</TargetFramework>
-    <OutputType>Library</OutputType>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <PackageId>Avalonia.Controls.PanAndZoom</PackageId>
-    <Description>Easily add pan and zoom functionality to your Avalonia apps using PanAndZoom control.</Description>
-    <PackageTags>Avalonia;Pan;Zoom;Control;Xaml;Managed;C#"</PackageTags>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Avalonia" />
-  </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Avalonia" />
+    </ItemGroup>
 
 </Project>

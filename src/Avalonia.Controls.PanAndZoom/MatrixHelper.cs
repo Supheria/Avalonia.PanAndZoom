@@ -2,9 +2,6 @@
 
 namespace Avalonia.Controls.PanAndZoom;
 
-/// <summary>
-/// Avalonia Matrix helper methods.
-/// </summary>
 public static class MatrixHelper
 {
     /// <summary>
@@ -51,7 +48,14 @@ public static class MatrixHelper
     /// <returns>The created scaling matrix.</returns>
     public static Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
     {
-        return new Matrix(scaleX, 0, 0, scaleY, centerX - (scaleX * centerX), centerY - (scaleY * centerY));
+        return new Matrix(
+            scaleX,
+            0,
+            0,
+            scaleY,
+            centerX - (scaleX * centerX),
+            centerY - (scaleY * centerY)
+        );
     }
 
     /// <summary>
@@ -63,7 +67,13 @@ public static class MatrixHelper
     /// <param name="centerX">The center X-coordinate of the scaling.</param>
     /// <param name="centerY">The center Y-coordinate of the scaling.</param>
     /// <returns>The created scaling matrix.</returns>
-    public static Matrix ScaleAtPrepend(Matrix matrix, double scaleX, double scaleY, double centerX, double centerY)
+    public static Matrix ScaleAtPrepend(
+        Matrix matrix,
+        double scaleX,
+        double scaleY,
+        double centerX,
+        double centerY
+    )
     {
         return ScaleAt(scaleX, scaleY, centerX, centerY) * matrix;
     }
@@ -76,7 +86,12 @@ public static class MatrixHelper
     /// <param name="offsetX">X-coordinate offset.</param>
     /// <param name="offsetY">Y-coordinate offset.</param>
     /// <returns>The created translation and scale matrix.</returns>
-    public static Matrix ScaleAndTranslate(double scaleX, double scaleY, double offsetX, double offsetY)
+    public static Matrix ScaleAndTranslate(
+        double scaleX,
+        double scaleY,
+        double offsetX,
+        double offsetY
+    )
     {
         return new Matrix(scaleX, 0.0, 0.0, scaleY, offsetX, offsetY);
     }
@@ -137,6 +152,7 @@ public static class MatrixHelper
     {
         return new Point(
             (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
-            (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
+            (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32
+        );
     }
 }

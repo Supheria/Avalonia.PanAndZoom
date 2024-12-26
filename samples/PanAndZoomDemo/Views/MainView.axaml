@@ -54,7 +54,6 @@
                     <paz:ZoomBorder
                         Background="SlateBlue"
                         ClipToBounds="True"
-                        EnableConstrains="False"
                         Focusable="True"
                         HorizontalAlignment="Stretch"
                         Name="ZoomBorder1"
@@ -105,7 +104,6 @@
                     <paz:ZoomBorder
                         Background="SlateBlue"
                         ClipToBounds="True"
-                        EnableConstrains="False"
                         Focusable="True"
                         HorizontalAlignment="Stretch"
                         Name="ZoomBorder2"
